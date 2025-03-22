@@ -87,7 +87,8 @@ class _PlayerControllerWidgetState extends State<PlayerControllerWidget> {
         builder: (context, position, child) {
           return Stack(
             children: [
-              Positioned(
+              AnimatedPositioned(
+                duration: Duration(milliseconds: 16),
                 left: position.dx - 15,
                 top: position.dy - 20,
                 child: CustomPaint(painter: CursorPainter(angle)),
