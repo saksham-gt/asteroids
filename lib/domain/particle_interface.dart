@@ -2,7 +2,7 @@ import 'package:asteroids/domain/particle.dart';
 import 'package:flutter/widgets.dart';
 
 abstract interface class ParticleInterface {
-  void spawnParticles();
+  void spawnParticles({Offset? position, Offset? velocity});
   Offset randomPositionGenerator();
   double randomSizeGenerator();
   Offset randomVelocityGenerator();

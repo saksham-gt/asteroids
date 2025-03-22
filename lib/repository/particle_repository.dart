@@ -35,8 +35,7 @@ class ParticleRepositoryImpl implements ParticleInterface {
   @override
   Offset randomPositionGenerator() {
     return Offset(
-      size.width +
-          random.nextDouble() * size.width,
+      size.width + random.nextDouble() * size.width,
       random.nextDouble() * size.height,
     );
   }
@@ -53,10 +52,10 @@ class ParticleRepositoryImpl implements ParticleInterface {
 
   // Randomly spawn particles
   @override
-  void spawnParticles() {
+  void spawnParticles({Offset? position, Offset? velocity}) {
     final particle = Particle(
-      position: randomPositionGenerator(),
-      velocity: randomVelocityGenerator(),
+      position: position ?? randomPositionGenerator(),
+      velocity: velocity ?? randomVelocityGenerator(),
       radius: randomSizeGenerator(),
       color: Colors.red,
     );
@@ -68,8 +67,7 @@ class ParticleRepositoryImpl implements ParticleInterface {
     _particles.removeWhere((particle) {
       return (particle.position.dx < 0 && particle.velocity.dx < 0) ||
           (particle.position.dy < 0 && particle.velocity.dy < 0) ||
-          (particle.position.dy > size.height &&
-              particle.velocity.dy > 0);
+          (particle.position.dy > size.height && particle.velocity.dy > 0);
     });
   }
 

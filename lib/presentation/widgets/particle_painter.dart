@@ -42,7 +42,9 @@ class _ParticlesRendererState extends State<ParticlesRenderer> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _particlesTicker = Ticker((elapsed) => updateParticles());
+      _particlesTicker = Ticker((elapsed) {
+        updateParticles();
+      });
       _particlesTicker.start();
     });
   }

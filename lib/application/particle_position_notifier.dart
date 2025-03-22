@@ -34,6 +34,20 @@ class ParticlePositionNotifier extends ValueNotifier<List<Particle>> {
     spawnTimer.cancel();
   }
 
+  void generateNParticles(
+    int n, {
+    Offset? withVelocity,
+    Offset? startingPosition,
+  }) {
+    for (int i = 0; i < n; i++) {
+      _particleRepository.spawnParticles(
+        position: startingPosition,
+        velocity: withVelocity,
+      );
+      value = _particleRepository.particles;
+    }
+  }
+
   void updateParticles() {
     _particleRepository.eliminateParticlesOutOfViewPort();
 
@@ -44,8 +58,6 @@ class ParticlePositionNotifier extends ValueNotifier<List<Particle>> {
     _particleRepository.detectCollisionBetweenObstacles();
 
     for (Particle particle in _particleRepository.particles) {
-      /// Since this method is triggered by controller whenever a certain time is elapsed and triggered by ticker (60 fps),
-      /// We check exactly the animation progress by controller value and move the [Particle] accordingly.
       particle.position += particle.velocity;
     }
     value = _particleRepository.particles;

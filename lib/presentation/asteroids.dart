@@ -15,6 +15,7 @@ class AsteroidsApp extends StatefulWidget {
 class _AsteroidsAppState extends State<AsteroidsApp> {
   late ParticlePositionNotifier particleNotifier;
   late PlayerPositionNotifier playerPositionNotifier;
+
   @override
   void didChangeDependencies() {
     final size = MediaQuery.of(context).size;
@@ -22,6 +23,8 @@ class _AsteroidsAppState extends State<AsteroidsApp> {
     playerPositionNotifier = PlayerPositionNotifier(
       Offset(size.width / 2, size.height / 2),
     );
+
+    particleNotifier.generateNParticles(7);
 
     super.didChangeDependencies();
   }
