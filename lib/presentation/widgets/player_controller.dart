@@ -1,51 +1,57 @@
+import 'package:asteroids/application/di.dart';
+import 'package:asteroids/application/particle_position_notifier.dart';
+import 'package:asteroids/application/player_position_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 class PlayerControllerWidget extends StatefulWidget {
-  // final Offset pointer;
-  const PlayerControllerWidget({super.key});
+  final PlayerPositionNotifier playerPositionNotifier;
+  final ParticlePositionNotifier particlePositionNotifier;
+  const PlayerControllerWidget({
+    required this.particlePositionNotifier,
+    required this.playerPositionNotifier,
+    super.key,
+  });
 
   @override
   State<PlayerControllerWidget> createState() => _PlayerControllerWidgetState();
 }
 
 class _PlayerControllerWidgetState extends State<PlayerControllerWidget> {
-  final double radius = 10;
-  Offset pointer = Offset.zero;
-
-  @override
-  void didChangeDependencies() {
-    pointer = Offset(
-      MediaQuery.of(context).size.width / 2,
-      MediaQuery.of(context).size.height / 2,
-    );
-
-    super.didChangeDependencies();
+  void updatePlayerPosition(Offset position) {
+    widget.playerPositionNotifier.update(position);
   }
 
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
       cursor: SystemMouseCursors.none,
-      onHover: (event) {
-        setState(() {
-          pointer = event.localPosition;
-        });
-      },
       onEnter: (event) {
-        setState(() {
-          pointer = event.localPosition;
-        });
+        updatePlayerPosition(event.localPosition);
       },
 
-      child: Stack(
-        children: [
-          AnimatedPositioned(
-            duration: const Duration(milliseconds: 10),
-            left: pointer.dx - radius,
-            top: pointer.dy - radius,
-            child: CustomPaint(painter: CursorPainter(pointer)),
-          ),
-        ],
+      onHover: (event) {
+        updatePlayerPosition(event.localPosition);
+      },
+
+      onExit: (event) {
+        updatePlayerPosition(event.localPosition);
+      },
+
+      child: ValueListenableBuilder(
+        valueListenable: widget.playerPositionNotifier,
+        builder: (context, position, child) {
+          return Stack(
+            children: [
+              AnimatedPositioned(
+                duration: const Duration(milliseconds: 100),
+                left: position.dx - widget.playerPositionNotifier.player.radius,
+                top: position.dy - widget.playerPositionNotifier.player.radius,
+                child: CustomPaint(painter: CursorPainter(position)),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
