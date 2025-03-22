@@ -1,9 +1,8 @@
-import 'package:asteroids/application/particle_position_notifier.dart';
 import 'package:asteroids/presentation/asteroids.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MaterialApp(home: const HomeWidget()));
+  runApp(MaterialApp(home: HomeWidget()));
 }
 
 class HomeWidget extends StatelessWidget {
@@ -11,8 +10,6 @@ class HomeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final particleNotifier = ParticlePositionNotifier(context, []);
-
-    return AsteroidsApp(particleNotifier: particleNotifier);
+    return AsteroidsApp();
   }
 }
