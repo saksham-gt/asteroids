@@ -8,7 +8,7 @@ class PlayerPositionNotifier extends ValueNotifier<Offset> {
   late Player _player;
   Offset startingPosition;
   PlayerPositionNotifier(this.startingPosition) : super(startingPosition) {
-    _player = Player(position: super.value, radius: 10, color: Colors.white);
+    _player = Player(position: super.value, color: Colors.white);
   }
 
   Player get player => _player;
@@ -41,6 +41,6 @@ class PlayerPositionNotifier extends ValueNotifier<Offset> {
     final xDistance = pow(otherParticlePosition.dx - player.position.dx, 2);
     final yDistance = pow(otherParticlePosition.dy - player.position.dy, 2);
 
-    return sqrt(xDistance + yDistance) <= particle.radius + player.radius;
+    return sqrt(xDistance + yDistance) <= particle.radius;
   }
 }
