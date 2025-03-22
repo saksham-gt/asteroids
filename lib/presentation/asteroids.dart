@@ -5,19 +5,29 @@ import 'package:asteroids/presentation/widgets/game_timer.dart';
 import 'package:asteroids/presentation/widgets/particle_painter.dart';
 import 'package:flutter/material.dart';
 
-class AsteroidsApp extends StatelessWidget {
+class AsteroidsApp extends StatefulWidget {
   const AsteroidsApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+  State<AsteroidsApp> createState() => _AsteroidsAppState();
+}
 
-    final playerPositionNotifier = PlayerPositionNotifier(
+class _AsteroidsAppState extends State<AsteroidsApp> {
+  late ParticlePositionNotifier particleNotifier;
+  late PlayerPositionNotifier playerPositionNotifier;
+  @override
+  void didChangeDependencies() {
+    final size = MediaQuery.of(context).size;
+    particleNotifier = ParticlePositionNotifier(size, []);
+    playerPositionNotifier = PlayerPositionNotifier(
       Offset(size.width / 2, size.height / 2),
     );
 
-    final particleNotifier = ParticlePositionNotifier(context, []);
+    super.didChangeDependencies();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(

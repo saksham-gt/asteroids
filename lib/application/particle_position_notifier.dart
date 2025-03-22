@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:asteroids/domain/particle.dart';
 
 class ParticlePositionNotifier extends ValueNotifier<List<Particle>> {
-  final BuildContext context;
+  final Size size;
 
   late ParticleInterface _particleRepository;
 
@@ -18,11 +18,11 @@ class ParticlePositionNotifier extends ValueNotifier<List<Particle>> {
 
   late Timer spawnTimer;
 
-  ParticlePositionNotifier(this.context, super.value) {
-    _particleRepository = ParticleRepositoryImpl(context);
+  ParticlePositionNotifier(this.size, super.value) {
+    _particleRepository = ParticleRepositoryImpl(size);
 
     spawnTimer = Timer.periodic(Duration(milliseconds: 200), (timer) {
-      // Spawn new obstacles every 100 millisecs. and notify
+      // Spawn new obstacles every 200 ms and notify
       _particleRepository.spawnParticles();
       value = _particleRepository.particles;
     });
@@ -39,7 +39,6 @@ class ParticlePositionNotifier extends ValueNotifier<List<Particle>> {
 
     if (_particleRepository.particles.isEmpty) {
       _particleRepository.spawnParticles();
-      value = _particleRepository.particles;
     }
 
     _particleRepository.detectCollisionBetweenObstacles();

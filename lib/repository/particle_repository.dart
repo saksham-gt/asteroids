@@ -5,10 +5,10 @@ import 'package:asteroids/domain/particle_interface.dart';
 import 'package:flutter/material.dart';
 
 class ParticleRepositoryImpl implements ParticleInterface {
-  final BuildContext context;
+  final Size size;
   List<Particle> _particles = [];
   Random random = Random();
-  ParticleRepositoryImpl(this.context) {
+  ParticleRepositoryImpl(this.size) {
     _particles = [];
     random = Random();
   }
@@ -35,9 +35,9 @@ class ParticleRepositoryImpl implements ParticleInterface {
   @override
   Offset randomPositionGenerator() {
     return Offset(
-      MediaQuery.of(context).size.width +
-          random.nextDouble() * MediaQuery.of(context).size.width,
-      random.nextDouble() * MediaQuery.of(context).size.height,
+      size.width +
+          random.nextDouble() * size.width,
+      random.nextDouble() * size.height,
     );
   }
 
@@ -68,7 +68,7 @@ class ParticleRepositoryImpl implements ParticleInterface {
     _particles.removeWhere((particle) {
       return (particle.position.dx < 0 && particle.velocity.dx < 0) ||
           (particle.position.dy < 0 && particle.velocity.dy < 0) ||
-          (particle.position.dy > MediaQuery.of(context).size.height &&
+          (particle.position.dy > size.height &&
               particle.velocity.dy > 0);
     });
   }

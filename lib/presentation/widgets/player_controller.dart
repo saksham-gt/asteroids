@@ -2,7 +2,6 @@ import 'package:asteroids/application/di.dart';
 import 'package:asteroids/application/particle_position_notifier.dart';
 import 'package:asteroids/application/player_position_notifier.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 
 class PlayerControllerWidget extends StatefulWidget {
   final PlayerPositionNotifier playerPositionNotifier;
@@ -22,20 +21,31 @@ class _PlayerControllerWidgetState extends State<PlayerControllerWidget> {
     widget.playerPositionNotifier.update(position);
   }
 
+  void updateGameStatus() {
+    gameOverNotifier.updateStatus(
+      widget.playerPositionNotifier.hasCollidedWith(
+        particles: widget.particlePositionNotifier.value,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
       cursor: SystemMouseCursors.none,
       onEnter: (event) {
         updatePlayerPosition(event.localPosition);
+        updateGameStatus();
       },
 
       onHover: (event) {
         updatePlayerPosition(event.localPosition);
+        updateGameStatus();
       },
 
       onExit: (event) {
         updatePlayerPosition(event.localPosition);
+        updateGameStatus();
       },
 
       child: ValueListenableBuilder(
