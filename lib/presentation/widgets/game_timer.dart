@@ -16,11 +16,12 @@ class GameTimer extends StatelessWidget {
       ),
       child: ValueListenableBuilder(
         valueListenable: gameTimerNotifier,
-        builder:
-            (context, value, child) => Text(
-              'Time: ${value.formatDuration()}',
-              style: const TextStyle(color: Colors.black, fontSize: 20),
-            ),
+        builder: (context, value, child) {
+          return Text(
+            'Time: ${value.formatDuration()}',
+            style: const TextStyle(color: Colors.black, fontSize: 20),
+          );
+        },
       ),
     );
   }

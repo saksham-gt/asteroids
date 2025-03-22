@@ -3,27 +3,32 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 
 class GameTimerNotifier extends ValueNotifier<Duration> {
-  late Timer timer;
+  late Timer _timer;
+
   GameTimerNotifier() : super(Duration.zero) {
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      startTimer();
-    });
+    startTimer();
   }
 
   void startTimer() {
     value = Duration.zero;
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      incrementTimer();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _incrementTimer();
     });
   }
 
-  void incrementTimer() {
+  void _incrementTimer() {
     value += const Duration(seconds: 1);
     notifyListeners();
   }
 
   void stopTimer() {
-    timer.cancel();
+    _timer.cancel();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _timer.cancel();
   }
 }
 
