@@ -14,8 +14,6 @@ class ParticlePositionNotifier extends ValueNotifier<List<Particle>> {
 
   late ParticleInterface _particleRepository;
 
-  ParticleInterface get repository => _particleRepository;
-
   late Timer spawnTimer;
 
   ParticlePositionNotifier(this.size, super.value) {
