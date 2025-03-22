@@ -1,6 +1,10 @@
 # asteroids
 
-A new Flutter project.
+A new Flutter project. Built classic Asteroids Arcade game in Flutter Web.
+
+Video:
+
+https://github.com/user-attachments/assets/1e9e07d8-c9b8-469b-9edc-3a3524f8456d
 
 ## Getting Started
 
