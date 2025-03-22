@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/widgets.dart';
 
 class Particle {
@@ -29,6 +31,14 @@ class Particle {
   @override
   String toString() {
     return 'Particle(position: $position, velocity: $velocity, radius: $radius, color: $color)';
+  }
+
+  bool isColliding(Particle other) {
+    final otherParticlePosition = other.position;
+    final xDistance = pow(otherParticlePosition.dx - position.dx, 2);
+    final yDistance = pow(otherParticlePosition.dy - position.dy, 2);
+
+    return sqrt(xDistance + yDistance) < other.radius + radius;
   }
 
   @override

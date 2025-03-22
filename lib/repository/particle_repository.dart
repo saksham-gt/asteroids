@@ -27,7 +27,7 @@ class ParticleRepositoryImpl implements ParticleInterface {
   double get minVelocityAtSpawn => -1; // Negative because moving left
 
   @override
-  double get maxVelocityAtSpawn => -5; // Negative because moving left
+  double get maxVelocityAtSpawn => -4; // Negative because moving left
 
   @override
   List<Particle> get particles => _particles;
@@ -53,7 +53,7 @@ class ParticleRepositoryImpl implements ParticleInterface {
 
   // Randomly spawn particles
   @override
-  void randomlySpawnParticles() {
+  void spawnParticles() {
     final particle = Particle(
       position: randomPositionGenerator(),
       velocity: randomVelocityGenerator(),
@@ -77,5 +77,55 @@ class ParticleRepositoryImpl implements ParticleInterface {
   double randomSizeGenerator() {
     return random.nextDouble() * (maxParticleSize - minParticleSize) +
         minParticleSize;
+  }
+
+  // To change the velocity of obstacles if they collide with each other
+  @override
+  void detectCollisionBetweenObstacles() {
+    for (int i = 0; i < particles.length; i++) {
+      for (int j = i + 1; j < particles.length; j++) {
+        if (particles[i].isColliding(particles[j])) {
+          resolveObstacleCollisions(i, j);
+        }
+      }
+    }
+  }
+
+  // Changing velocity by the law of conservation of momentum.
+  @override
+  void resolveObstacleCollisions(int particleIndex1, int particleIndex2) {
+    final p1 = particles[particleIndex1];
+    final massP1 = pi * p1.radius * p1.radius;
+    final p2 = particles[particleIndex2];
+    final massP2 = pi * p2.radius * p2.radius;
+
+    Offset delta = p1.position - p2.position;
+    double distanceSquared = delta.dx * delta.dx + delta.dy * delta.dy;
+    if (distanceSquared == 0) return;
+
+    // Calculate velocity difference
+    Offset velocityDiff = p1.velocity - p2.velocity;
+
+    // Project velocity difference onto collision normal
+    double dotProduct =
+        (velocityDiff.dx * delta.dx + velocityDiff.dy * delta.dy) /
+        distanceSquared;
+
+    if (dotProduct > 0) return; // Ignore if moving away from each other
+
+    // Compute momentum exchange using conservation of momentum
+    double massFactor = (2 * massP2) / (massP1 + massP2);
+    Offset impulse = Offset(
+      massFactor * dotProduct * delta.dx,
+      massFactor * dotProduct * delta.dy,
+    );
+    p1.velocity -= impulse;
+
+    massFactor = (2 * massP1) / (massP1 + massP2);
+    impulse = Offset(
+      massFactor * dotProduct * delta.dx,
+      massFactor * dotProduct * delta.dy,
+    );
+    p2.velocity += impulse;
   }
 }
