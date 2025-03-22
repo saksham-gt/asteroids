@@ -69,17 +69,14 @@ class _PlayerControllerWidgetState extends State<PlayerControllerWidget> {
       cursor: SystemMouseCursors.none,
       onEnter: (event) {
         updatePlayerPosition(event.localPosition);
-        // updateGameStatus();
       },
 
       onHover: (event) {
         updatePlayerPosition(event.localPosition);
-        // updateGameStatus();
       },
 
       onExit: (event) {
         updatePlayerPosition(event.localPosition);
-        // updateGameStatus();
       },
 
       child: ValueListenableBuilder(
