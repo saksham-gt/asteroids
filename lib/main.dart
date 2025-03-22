@@ -1,4 +1,6 @@
+import 'package:asteroids/application/di.dart';
 import 'package:asteroids/presentation/asteroids.dart';
+import 'package:asteroids/presentation/game_over_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,6 +12,11 @@ class HomeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AsteroidsApp();
+    return ValueListenableBuilder(
+      valueListenable: gameOverNotifier,
+      builder:
+          (context, isGameOver, child) =>
+              isGameOver ? GameOverScreen() : AsteroidsApp(),
+    );
   }
 }
